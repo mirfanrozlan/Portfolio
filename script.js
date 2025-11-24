@@ -209,9 +209,11 @@ if (hero) {
 // Enhanced typing animation for hero subtitle
 function typeWriter() {
     const texts = [
-        'Software Developer',
-        'Mobile Developer',
-        'AI Developer'
+        'Website Dev',
+        'Artificial Intelligent',
+        'Mobile Apps',
+        'UI UX',
+        'Assignment Helper'
     ];
     const typingElement = document.getElementById('typing-text');
     let textIndex = 0;
