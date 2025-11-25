@@ -41,18 +41,41 @@
             ]
         }
     </script>
+  <style>
+    @media (max-width: 767px) {
+      #nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,0.92);
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding: 16px;
+        flex-direction: column;
+        gap: 12px;
+      }
+      #nav-menu.active { display: flex !important; }
+      #nav-toggle span { transition: transform .3s ease, opacity .3s ease; }
+      #nav-toggle.active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+      #nav-toggle.active span:nth-child(2) { opacity: 0; }
+      #nav-toggle.active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    }
+  </style>
 </head>
 <body>
     <!-- Header Section -->
     <header class="header fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-lg border-b border-white/10">
-        <nav class="max-w-7xl mx-auto px-6 py-4">
+        <nav class="max-w-7xl mx-auto px-6 py-4 relative">
             <div class="flex items-center justify-between">
                 <div class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     <h1>Portfolio Web</h1>
                 </div>
                 <div class="hidden md:flex space-x-8" id="nav-menu">
                     <a href="#home" class="nav-link text-white hover:text-primary transition-colors duration-300">Home</a>
+                    <a href="#services" class="nav-link text-white hover:text-primary transition-colors duration-300">Services</a>
                     <a href="#projects" class="nav-link text-white hover:text-primary transition-colors duration-300">Projects</a>
+                    <a href="contact.html" class="nav-link text-white hover:text-primary transition-colors duration-300">Contact</a>
                 </div>
                 <div class="md:hidden flex flex-col space-y-1 cursor-pointer" id="nav-toggle">
                     <span class="w-6 h-0.5 bg-white transition-all duration-300"></span>
@@ -197,11 +220,73 @@
                 </div>
             </div>
          </div>
-         
-
-     </section>
 
 
+    </section>
+
+    <section id="services" class="py-20 bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
+        <div class="absolute inset-0">
+            <div class="absolute top-16 left-8 w-24 h-24 border border-primary/10 rotate-45 animate-float"></div>
+            <div class="absolute bottom-24 right-12 w-12 h-12 bg-secondary/5 rounded-full animate-pulse"></div>
+            <div class="absolute top-1/3 left-1/5 w-6 h-6 border-2 border-accent/20 rounded-full animate-float" style="animation-delay: 1.5s;"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16" data-reveal>
+                <div class="inline-flex items-center px-6 py-3 bg-gray-900/80 border border-primary/30 rounded-full text-primary text-sm font-medium backdrop-blur-sm mb-8">
+                    <div class="w-3 h-3 bg-primary rounded-full mr-3 animate-pulse"></div>
+                    What We Do
+                </div>
+                <h2 class="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 tracking-tight">
+                    Our <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Service</span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">Solutions tailored to your goals: fast delivery, clean code, and modern UX.</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" data-stagger>
+                <div class="p-6 rounded-2xl bg-gray-900/60 border border-gray-800 hover:border-primary/40 transition hover-lift" data-reveal>
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v2H4V6zm0 5h10v2H4v-2zm0 5h16v2H4v-2z"/></svg>
+                    </div>
+                    <h3 class="font-semibold mb-1">Website Development</h3>
+                    <p class="text-gray-400 text-sm">Responsive websites, landing pages, and dashboards built with modern stacks.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-gray-900/60 border border-gray-800 hover:border-secondary/40 transition hover-lift" data-reveal>
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary to-accent flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a2 2 0 012 2v16a2 2 0 01-2 2H7a2 2 0 01-2-2V4a2 2 0 012-2zm5 19a1 1 0 100-2 1 1 0 000 2z"/></svg>
+                    </div>
+                    <h3 class="font-semibold mb-1">Mobile Apps</h3>
+                    <p class="text-gray-400 text-sm">Cross-platform apps with smooth performance and offline-first UX.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-gray-900/60 border border-gray-800 hover:border-accent/40 transition hover-lift" data-reveal>
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-accent to-primary flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 3.87 3.13 7 7 7s7-3.13 7-7a7 7 0 00-7-7zm0 18c-4.97 0-9 1.79-9 4v2h18v-2c0-2.21-4.03-4-9-4z"/></svg>
+                    </div>
+                    <h3 class="font-semibold mb-1">AI/ML Solutions</h3>
+                    <p class="text-gray-400 text-sm">Predictive systems, computer vision, and automation to boost efficiency.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-gray-900/60 border border-gray-800 hover:border-primary/40 transition hover-lift" data-reveal>
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7h7l-5.5 4 2 7-6.5-4.5L5.5 20l2-7L2 9h7z"/></svg>
+                    </div>
+                    <h3 class="font-semibold mb-1">UI/UX Design</h3>
+                    <p class="text-gray-400 text-sm">Intuitive interfaces and design systems focused on user outcomes.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-gray-900/60 border border-gray-800 hover:border-secondary/40 transition hover-lift" data-reveal>
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary to-accent flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H6z"/></svg>
+                    </div>
+                    <h3 class="font-semibold mb-1">Cloud & DevOps</h3>
+                    <p class="text-gray-400 text-sm">Deployment pipelines, monitoring, and scalability on modern cloud providers.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-gray-900/60 border border-gray-800 hover:border-accent/40 transition hover-lift" data-reveal>
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-accent to-primary flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v2H4V4zm0 4h10v2H4V8zm0 4h16v2H4v-2zm0 4h10v2H4v-2z"/></svg>
+                    </div>
+                    <h3 class="font-semibold mb-1">Assignment Support</h3>
+                    <p class="text-gray-400 text-sm">Structured guidance for academic and capstone projects with best practices.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Projects Section -->
     <section id="projects" class="py-20 bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
@@ -304,6 +389,8 @@
         </div>
     </section>
 
+    
+    
 
 
     <!-- Footer -->
@@ -311,11 +398,6 @@
         <div class="max-w-6xl mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Portfolio Web. All Rights Reserved.</p>
-                <div class="flex space-x-6">
-                    <a href="#" aria-label="GitHub" class="text-gray-400 hover:text-primary transition-colors duration-300">GitHub</a>
-                    <a href="#" aria-label="LinkedIn" class="text-gray-400 hover:text-primary transition-colors duration-300">LinkedIn</a>
-                    <a href="#" aria-label="Twitter" class="text-gray-400 hover:text-primary transition-colors duration-300">Whatsapp</a>
-                </div>
             </div>
         </div>
     </footer>

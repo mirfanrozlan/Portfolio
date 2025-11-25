@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us</title>
+  <style>
+    :root {
+      --primary: #00ff88;
+      --secondary: #00d4ff;
+      --accent: #bb86fc;
+      --bg-start: #0f172a; /* slate-900 */
+      --bg-mid: #000000;
+      --bg-end: #0f172a;
+    }
+    * { box-sizing: border-box }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial; background: linear-gradient(135deg,var(--bg-start),var(--bg-mid),var(--bg-end)); color:#fff }
+    a { color: inherit; text-decoration: none }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px }
+    .header { position: sticky; top:0; z-index:50; backdrop-filter: blur(12px); background: rgba(0,0,0,.85); border-bottom: 1px solid rgba(255,255,255,.12) }
+    .nav { display:flex; align-items:center; justify-content:space-between; padding: 16px 0; position: relative }
+    .brand { font-weight: 900; font-size: 20px; background-image: linear-gradient(90deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip:text; color: transparent }
+    .nav-links { display:flex; gap: 20px }
+    .nav-link { color:#fff; opacity:.9 }
+    .nav-link:hover { color: var(--primary) }
+    .section { padding: 64px 0; position: relative }
+    .section-header { text-align:center; margin-bottom: 24px }
+    .badge { display:inline-flex; align-items:center; gap:10px; padding:10px 16px; border:1px solid rgba(255,255,255,.18); border-radius:999px; background: rgba(17,24,39,.6); color: var(--primary); font-weight:600 }
+    .headline { font-weight: 900; font-size: clamp(32px, 6vw, 56px); margin: 16px 0 }
+    .headline .grad { background-image: linear-gradient(90deg, var(--primary), var(--secondary)); -webkit-background-clip:text; background-clip:text; color: transparent }
+    .sub { color:#cbd5e1; font-size: 18px; max-width: 720px; margin: 0 auto }
+    .grid { display:grid; grid-template-columns: 1fr; gap: 16px }
+    @media (min-width: 900px){ .grid { grid-template-columns: 1fr 1fr } }
+    .card { border:1px solid #1f2937; background: rgba(17,24,39,.6); border-radius: 24px; padding: 24px }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,255,136,.15); transition: all .3s ease }
+    .label { display:block; color:#94a3b8; font-size:14px; margin-bottom:8px }
+    .input, .select, .textarea { width:100%; padding: 12px 14px; border-radius: 14px; border:1px solid #374151; background: rgba(0,0,0,.4); color:#e5e7eb; outline:none }
+    .input:focus, .select:focus, .textarea:focus { border-color: rgba(0,212,255,.6) }
+    .textarea { min-height: 140px; resize: vertical }
+    .actions { display:flex; gap:12px; flex-wrap:wrap; margin-top: 16px }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding: 12px 20px; border-radius: 14px; font-weight: 700; transition: transform .15s ease, filter .15s ease }
+    .btn-primary { background: var(--primary); color:#000 }
+    .btn-primary:hover { filter: brightness(1.1) }
+    .btn-primary:active { transform: scale(.97) }
+    .btn-outline { border:1px solid #475569; color:#cbd5e1 }
+    .btn-outline:hover { border-color:#64748b }
+    .stack { display:flex; align-items:center; gap:8px }
+    @media (max-width: 900px){
+      .nav-links { display:none; position:absolute; top:100%; left:0; right:0; background: rgba(0,0,0,.92); border-top:1px solid rgba(255,255,255,.1); padding:16px; flex-direction:column; gap:12px }
+      .nav-links.active { display:flex }
+      .hamburger { display:flex; flex-direction:column; gap:6px; cursor:pointer }
+      .hamburger span { width:26px; height:2px; background:#fff; transition: transform .3s ease, opacity .3s ease }
+      .hamburger.active span:nth-child(1){ transform: translateY(4px) rotate(45deg) }
+      .hamburger.active span:nth-child(2){ opacity:0 }
+      .hamburger.active span:nth-child(3){ transform: translateY(-4px) rotate(-45deg) }
+    }
+    @media (min-width: 901px){ .hamburger { display:none } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a href="index.html#home" class="brand">Portfolio Web</a>
+      <nav class="nav-links" id="nav-menu">
+        <a class="nav-link" href="index.html#home">Home</a>
+        <a class="nav-link" href="index.html#services">Services</a>
+        <a class="nav-link" href="index.html#projects">Projects</a>
+      </nav>
+      <div id="nav-toggle" class="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="badge"><span style="width:10px;height:10px;border-radius:999px;background:var(--primary)"></span>Reach Out</div>
+          <h1 class="headline">Contact <span class="grad">Us</span></h1>
+          <p class="sub">Tell us about your idea, timeline, and budget. We reply fast and build with modern, clean code.</p>
+        </div>
+
+        <div class="grid">
+          <!-- Option 1: Contact Form -->
+          <div class="card">
+            <form id="contact-form">
+              <label class="label" for="name">Name</label>
+              <input id="name" class="input" type="text" placeholder="Your name" required />
+
+              <label class="label" for="service">Service</label>
+              <select id="service" class="select" required>
+                <option value="Assignment Help">Assignment Help</option>
+                <option value="Web Development">Web Development</option>
+                <option value="Mobile App">Mobile App</option>
+                <option value="UI/UX Design">UI/UX Design</option>
+                <option value="Automation & Scripting">Automation & Scripting</option>
+                <option value="Machine Learning / AI">Machine Learning / AI</option>
+              </select>
+
+              <label class="label" for="brief">Project Brief</label>
+              <textarea id="brief" class="textarea" placeholder="Describe the problem and desired outcome" required></textarea>
+
+              <div class="actions">
+                <button type="submit" class="btn btn-primary">Send via WhatsApp</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Option 2: Direct Contact -->
+          <div class="card" style="display:flex;flex-direction:column;gap:14px;justify-content:center;align-items:flex-start">
+            <div class="badge" style="background:rgba(17,24,39,.7);border-color:rgba(0,255,136,.35);color:var(--primary)">Quick Chat</div>
+            <h3 style="margin:0;font-size:20px">Prefer a quick chat?</h3>
+            <p class="sub" style="font-size:16px">Skip the form — jump straight into WhatsApp and we’ll respond quickly.</p>
+            <div class="stack" style="color:#9ca3af;font-size:14px">
+              <span>• Fast replies</span>
+              <span>• Clear scope</span>
+              <span>• Budget-friendly</span>
+            </div>
+            <div class="actions">
+              <a id="wa-direct" class="btn btn-primary" href="#">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 12.286c-.297-.149-1.758-.867-2.03-.967-.273-.099-.472-.148-.671.15-.198.297-.767.966-.94 1.164-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.173.198-.298.298-.496.099-.198.05-.372-.025-.521-.074-.149-.671-1.612-.919-2.207-.242-.579-.487-.5-.671-.51-.173-.009-.372-.011-.571-.011-.198 0-.52.074-.793.372-.273.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.1 3.204 5.077 4.487.71.306 1.263.489 1.694.626.712.227 1.36.195 1.874.118.571-.085 1.758-.718 2.007-1.412.248-.694.248-1.289.173-1.412-.074-.124-.272-.198-.57-.347z"/></svg>
+                Chat on WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="background:#000;padding:24px 0;border-top:1px solid rgba(255,255,255,.08)">
+    <div class="container" style="display:flex;justify-content:center">
+      <p style="color:#9ca3af">&copy; 2025 Portfolio Web. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // WhatsApp number (replace with yours if needed)
+    const WHATSAPP_NUMBER = '60163636087';
+
+    // Placeholder quick message for direct CTA
+    const QUICK_MSG = 'Hi';
+
+    // Form handler → builds encoded message and opens wa.me
+    document.getElementById('contact-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const name = /** required */ document.getElementById('name').value.trim();
+      const service = /** required */ document.getElementById('service').value;
+      const brief = /** required */ document.getElementById('brief').value.trim();
+      if (!name || !service || !brief) return alert('Please complete all fields.');
+      const msg = `Hello,\nName: ${name}\nService: ${service}\nBrief: ${brief}`;
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    });
+
+    // Direct CTA → opens WhatsApp with short template
+    document.getElementById('wa-direct').addEventListener('click', function(e){
+      e.preventDefault();
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(QUICK_MSG)}`;
+      window.open(url, '_blank');
+    });
+    const ctToggle = document.getElementById('nav-toggle');
+    const ctMenu = document.getElementById('nav-menu');
+    if (ctToggle && ctMenu) {
+      ctToggle.addEventListener('click', () => {
+        ctMenu.classList.toggle('active');
+        ctToggle.classList.toggle('active');
+      });
+      ctMenu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          ctMenu.classList.remove('active');
+          ctToggle.classList.remove('active');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

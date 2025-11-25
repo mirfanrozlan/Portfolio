@@ -21,19 +21,15 @@ navLinks.forEach(link => {
 // Smooth Scrolling for Navigation Links
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-        e.preventDefault();
-        
-        const targetId = link.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        
-        if (targetSection) {
-            const headerHeight = header ? header.offsetHeight : 0;
-            const targetPosition = targetSection.offsetTop - headerHeight;
-            
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
+        const href = link.getAttribute('href') || '';
+        if (href.startsWith('#')) {
+            e.preventDefault();
+            const targetSection = document.querySelector(href);
+            if (targetSection) {
+                const headerHeight = header ? header.offsetHeight : 0;
+                const targetPosition = targetSection.offsetTop - headerHeight;
+                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+            }
         }
     });
 });
@@ -103,40 +99,7 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Form Submission Handler
-const contactForm = document.querySelector('.contact-form form');
-if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        // Get form data
-        const formData = new FormData(contactForm);
-        const name = contactForm.querySelector('input[type="text"]').value;
-        const email = contactForm.querySelector('input[type="email"]').value;
-        const message = contactForm.querySelector('textarea').value;
-        
-        // Simple validation
-        if (!name || !email || !message) {
-            alert('Please fill in all fields.');
-            return;
-        }
-        
-        // Simulate form submission
-        const submitBtn = contactForm.querySelector('.submit-btn');
-        const originalText = submitBtn.textContent;
-        
-        submitBtn.textContent = 'Sending...';
-        submitBtn.disabled = true;
-        
-        // Simulate API call
-        setTimeout(() => {
-            alert('Thank you for your message! I\'ll get back to you soon.');
-            contactForm.reset();
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }, 2000);
-    });
-}
+// Direct WhatsApp CTA is used; no form handler required here
 
 // Project Card Hover Effects
 const projectCards = document.querySelectorAll('.project-card');
@@ -423,10 +386,9 @@ window.addEventListener('load', () => {
     renderProjectDetail();
     initRevealAnimations();
     initTiltEffects();
-    initTechMarquee();
     initStackLogos();
     initTechScroll();
-    window.addEventListener('resize', throttle(() => { initTechMarquee(); initTechScroll(); }, 200));
+    window.addEventListener('resize', throttle(() => { initTechScroll(); }, 200));
 });
 
 // Skill tags animation
@@ -445,22 +407,7 @@ style.textContent = `
     .nav-link.active::after {
         width: 100% !important;
     }
-    .tech-marquee {
-        display: flex;
-        gap: 0.75rem;
-        white-space: nowrap;
-        will-change: transform;
-        animation: tech-scroll 24s linear infinite;
-    }
-    .tech-marquee__track {
-        display: inline-flex;
-        gap: 0.75rem;
-        white-space: nowrap;
-    }
-    @keyframes tech-scroll {
-        from { transform: translateX(0); }
-        to { transform: translateX(-50%); }
-    }
+    
     .stack-item {
         display: inline-flex;
         align-items: center;
@@ -720,28 +667,7 @@ function initTiltEffects() {
     });
 }
 
-function initTechMarquee() {
-    document.querySelectorAll('.tech-marquee').forEach(wrapper => {
-        const tracks = wrapper.querySelectorAll('.tech-marquee__track');
-        if (tracks.length === 0) return;
-        const primary = tracks[0];
-        const viewport = wrapper.parentElement;
-        const base = primary.innerHTML;
-        // Expand primary track until it covers viewport width
-        while (primary.scrollWidth < viewport.offsetWidth) {
-            primary.innerHTML += base;
-        }
-        // Make secondary track identical for seamless loop
-        if (tracks[1]) {
-            tracks[1].innerHTML = primary.innerHTML;
-        } else {
-            const clone = document.createElement('div');
-            clone.className = 'tech-marquee__track';
-            clone.innerHTML = primary.innerHTML;
-            wrapper.appendChild(clone);
-        }
-    });
-}
+// Removed legacy tech marquee logic; using tech-scroll track instead
 
 function initTechScroll() {
     const fill = (track) => {
