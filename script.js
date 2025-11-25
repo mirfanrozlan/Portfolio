@@ -424,7 +424,9 @@ window.addEventListener('load', () => {
     initRevealAnimations();
     initTiltEffects();
     initTechMarquee();
-    window.addEventListener('resize', throttle(() => initTechMarquee(), 200));
+    initStackLogos();
+    initTechScroll();
+    window.addEventListener('resize', throttle(() => { initTechMarquee(); initTechScroll(); }, 200));
 });
 
 // Skill tags animation
@@ -459,6 +461,23 @@ style.textContent = `
         from { transform: translateX(0); }
         to { transform: translateX(-50%); }
     }
+    .stack-item {
+        display: inline-flex;
+        align-items: center;
+        margin-right: 0.75rem;
+    }
+    .stack-logo {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+        display: block;
+        filter: brightness(0) invert(1);
+        opacity: 0.92;
+    }
+    .tech-stack-section { position: relative; }
+    .tech-scroll { overflow: hidden; }
+    .tech-track { display: inline-flex; align-items: center; gap: 0.9rem; white-space: nowrap; animation: tech-track-scroll 36s linear infinite; }
+    @keyframes tech-track-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 `;
 document.head.appendChild(style);
 
@@ -558,9 +577,29 @@ function renderProjectDetail() {
         ];
         const gallery = (project.images || []).slice(0,2);
         const testimonial = '';
-        const marquee = (project.tags || []).map(t => `
-            <span class=\"px-3 py-2 bg-gray-900/60 text-gray-300 text-sm rounded-xl border border-gray-800 hover:border-${theme}/40 hover-lift\">${t}</span>
-        `).join('');
+        const marquee = (project.tags || []).map(t => {
+            const normalized = t.toLowerCase();
+            const map = {
+                'vue.js':'vuedotjs',
+                'vue':'vuedotjs',
+                'next.js':'nextdotjs',
+                'next':'nextdotjs',
+                'tailwind css':'tailwindcss',
+                'tailwind':'tailwindcss',
+                'aws':'amazonaws',
+                'amazon web services':'amazonaws',
+                'web3.js':'web3dotjs',
+                'web3':'web3dotjs',
+                'raspberry pi':'raspberrypi',
+                'css':'css3',
+                'css3':'css3',
+                'html':'html5',
+                'html5':'html5',
+            };
+            const mapped = map[normalized] || normalized.replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+            const cdn = `https://cdn.jsdelivr.net/npm/simple-icons@15/icons/${mapped}.svg`;
+            return `<span class=\"stack-item\"><img class=\"stack-logo\" data-tag=\"${t}\" src=\"${cdn}\" alt=\"${t}\"/></span>`;
+        }).join('');
         container.innerHTML = `
             <section class="pt-10 md:pt-16 lg:pt-20 pb-8 md:pb-12">
                 <div class="grid md:grid-cols-2 gap-8 items-center">
@@ -603,10 +642,9 @@ function renderProjectDetail() {
             </section>
             <section class=\"py-12 md:py-16\">
                 <h2 class=\"text-2xl md:text-3xl font-bold mb-8\" data-reveal>Tech Stack</h2>
-                <div class=\"relative overflow-hidden\" data-reveal>
-                    <div class=\"tech-marquee\">
-                        <div class=\"tech-marquee__track\">${marquee}</div>
-                        <div class=\"tech-marquee__track\">${marquee}</div>
+                <div class=\"tech-stack-section\" data-reveal>
+                    <div class=\"tech-scroll\">
+                        <div class=\"tech-track\">${marquee}${marquee}</div>
                     </div>
                 </div>
             </section>
@@ -702,5 +740,52 @@ function initTechMarquee() {
             clone.innerHTML = primary.innerHTML;
             wrapper.appendChild(clone);
         }
+    });
+}
+
+function initTechScroll() {
+    const fill = (track) => {
+        const viewport = track.parentElement;
+        const base = track.getAttribute('data-base') || track.innerHTML;
+        track.setAttribute('data-base', base);
+        let guard = 0;
+        while (track.scrollWidth < viewport.offsetWidth * 2.4 && guard < 50) {
+            track.insertAdjacentHTML('beforeend', base);
+            guard++;
+        }
+    };
+    document.querySelectorAll('.tech-scroll .tech-track').forEach(track => {
+        fill(track);
+        track.querySelectorAll('img').forEach(img => {
+            if (img.complete) return;
+            img.addEventListener('load', () => fill(track));
+        });
+    });
+}
+
+const STACK_EXTS = ['svg','png','jpg','webp'];
+function slugifyTag(tag) {
+    return tag.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+}
+function logoPath(tag, idx) {
+    const slug = slugifyTag(tag);
+    const ext = STACK_EXTS[idx] || STACK_EXTS[0];
+    return `images/stack/${slug}.${ext}`;
+}
+function initStackLogos() {
+    document.querySelectorAll('img.stack-logo').forEach(img => {
+        const tag = img.getAttribute('data-tag') || '';
+        let idx = 0;
+        const tryNext = () => {
+            idx += 1;
+            if (idx < STACK_EXTS.length) {
+                img.src = logoPath(tag, idx);
+            } else {
+                const parent = img.parentElement;
+                if (parent) parent.style.display = 'none';
+                else img.style.display = 'none';
+            }
+        };
+        img.addEventListener('error', tryNext);
     });
 }
