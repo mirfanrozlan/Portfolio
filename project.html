@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Detail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#00ff88',
+                        'secondary': '#00d4ff',
+                        'accent': '#bb86fc'
+                    }
+                }
+            },
+            safelist: [
+                'text-primary','text-secondary','text-accent',
+                'border-primary/50','border-secondary/50','border-accent/50',
+                'border-primary/30','border-secondary/30','border-accent/30',
+                'bg-primary/10','bg-secondary/10','bg-accent/10',
+                'from-primary/25','to-primary/25','from-secondary/25','to-secondary/25','from-accent/25','to-accent/25',
+                'shadow-primary/10','shadow-secondary/10','shadow-accent/10'
+            ]
+        }
+    </script>
+    <style>
+      [data-reveal]{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease;transition-delay:var(--delay,0s)}
+      [data-reveal].show{opacity:1;transform:translateY(0)}
+      @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+      .animated-gradient-text{background-image:linear-gradient(90deg,#00ff88,#00d4ff,#bb86fc);background-size:200% 200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gradientShift 8s ease infinite}
+      .bg-grid{background-image:radial-gradient(circle at 25% 15%,rgba(0,255,136,.08),transparent 40%),radial-gradient(circle at 85% 35%,rgba(0,212,255,.08),transparent 40%),radial-gradient(circle at 50% 85%,rgba(187,134,252,.08),transparent 40%)}
+      .hover-lift{transition:transform .3s ease,box-shadow .3s ease}
+      .hover-lift:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,255,136,.15)}
+      .hover-glow{transition:box-shadow .3s ease,border-color .3s ease}
+      .hover-glow:hover{box-shadow:0 0 20px rgba(0,255,136,.3);border-color:rgba(0,255,136,.6)}
+      .hover-scale{transition:transform .3s ease}
+      .hover-scale:hover{transform:scale(1.05)}
+    </style>
+</head>
+<body class="bg-black text-white bg-grid min-h-screen">
+    <header class="header fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-lg border-b border-white/10">
+        <nav class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="index.html#projects" class="text-white hover:text-primary transition-colors">← Back</a>
+                <div class="hidden md:flex space-x-8" id="nav-menu">
+                    <a href="index.html#home" class="nav-link text-white hover:text-primary transition-colors duration-300">Home</a>
+                    <a href="index.html#projects" class="nav-link text-white hover:text-primary transition-colors duration-300">Projects</a>
+                </div>
+                <div id="nav-toggle" class="md:hidden flex flex-col space-y-1 cursor-pointer">
+                    <span class="w-6 h-0.5 bg-white transition-all duration-300"></span>
+                    <span class="w-6 h-0.5 bg-white transition-all duration-300"></span>
+                    <span class="w-6 h-0.5 bg-white transition-all duration-300"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="pt-24 relative overflow-hidden">
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute top-20 left-10 w-32 h-32 border border-primary/10 rotate-45 animate-float"></div>
+            <div class="absolute bottom-40 right-20 w-16 h-16 bg-secondary/5 rounded-full animate-pulse"></div>
+            <div class="absolute top-1/2 left-1/4 w-8 h-8 border-2 border-accent/20 rounded-full animate-float" style="animation-delay: 2s;"></div>
+        </div>
+        <section class="max-w-7xl mx-auto px-6" id="project-detail"></section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

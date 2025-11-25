@@ -2,7 +2,7 @@
 const navToggle = document.getElementById('nav-toggle');
 const navMenu = document.getElementById('nav-menu');
 const navLinks = document.querySelectorAll('.nav-link');
-const header = document.querySelector('.header');
+const header = document.querySelector('.header') || document.querySelector('header');
 
 // Mobile Menu Toggle
 navToggle.addEventListener('click', () => {
@@ -27,7 +27,7 @@ navLinks.forEach(link => {
         const targetSection = document.querySelector(targetId);
         
         if (targetSection) {
-            const headerHeight = header.offsetHeight;
+            const headerHeight = header ? header.offsetHeight : 0;
             const targetPosition = targetSection.offsetTop - headerHeight;
             
             window.scrollTo({
@@ -84,7 +84,7 @@ const sections = document.querySelectorAll('section');
 
 window.addEventListener('scroll', () => {
     let current = '';
-    const scrollPosition = window.pageYOffset + header.offsetHeight + 100;
+    const scrollPosition = window.pageYOffset + (header ? header.offsetHeight : 0) + 100;
     
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
@@ -419,6 +419,12 @@ window.addEventListener('load', () => {
     
     // Initialize status indicator
     initStatusIndicator();
+    renderProjects();
+    renderProjectDetail();
+    initRevealAnimations();
+    initTiltEffects();
+    initTechMarquee();
+    window.addEventListener('resize', throttle(() => initTechMarquee(), 200));
 });
 
 // Skill tags animation
@@ -436,6 +442,22 @@ style.textContent = `
     }
     .nav-link.active::after {
         width: 100% !important;
+    }
+    .tech-marquee {
+        display: flex;
+        gap: 0.75rem;
+        white-space: nowrap;
+        will-change: transform;
+        animation: tech-scroll 24s linear infinite;
+    }
+    .tech-marquee__track {
+        display: inline-flex;
+        gap: 0.75rem;
+        white-space: nowrap;
+    }
+    @keyframes tech-scroll {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
     }
 `;
 document.head.appendChild(style);
@@ -462,3 +484,223 @@ const throttledScrollHandler = throttle(() => {
 window.addEventListener('scroll', throttledScrollHandler);
 
 console.log('Portfolio website loaded successfully! 🚀');
+
+function renderProjects() {
+    const grid = document.getElementById('projects-grid');
+    if (!grid) return;
+    const render = (data) => {
+        const html = (data.projects || []).map(p => {
+            const theme = p.theme;
+            const badgeText = theme === 'primary' ? 'text-black' : 'text-white';
+            const hoverBorder = `hover:border-${theme}/50`;
+            const gradient = `bg-gradient-to-br from-${p.gradientFrom}/25 to-${p.gradientTo}/25`;
+            const titleHover = `group-hover:text-${theme}`;
+            const badgeBg = `bg-${theme}/90 ${badgeText}`;
+            const viewClasses = `w-full px-6 py-3 text-${theme} border border-${theme}/50 rounded-xl hover:bg-${theme}/10 transition-all duration-300 font-bold inline-flex items-center justify-center gap-2`;
+            const placeholder = '<div class="absolute inset-2 bg-gray-800/50 rounded-lg border border-dashed border-gray-600 flex items-center justify-center"><div class="text-center text-gray-400"><svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><p class="text-xs">Project Image</p></div></div>';
+            const visual = p.imageSrc ? `<img src="${p.imageSrc}" alt="${p.imageAlt || ''}" class="absolute inset-0 w-full h-full object-cover">` : placeholder;
+            return `<div class="bg-gray-900/60 backdrop-blur-sm rounded-2xl border border-gray-700/50 overflow-hidden ${hoverBorder} transition-all duration-300 group hover:transform hover:scale-105"><div class="h-48 ${gradient} relative overflow-hidden">${visual}<div class="absolute bottom-2 left-2"><span class="px-3 py-1 ${badgeBg} text-sm font-medium rounded-full">${p.categoryLabel}</span></div></div><div class="p-6"><h3 class="text-xl font-bold text-white mb-3 ${titleHover} transition-colors duration-300">${p.title}</h3><p class="text-gray-300 mb-4 leading-relaxed text-sm">${p.description}</p><div class="flex flex-wrap gap-2 mb-6">${(p.tags || []).map(t => `<span class=\"px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full border border-gray-600\">${t}</span>`).join('')}</div><a class="${viewClasses}" href="${p.viewUrl || '#'}"><svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13 7l5 5m0 0l-5 5m5-5H6\"></path></svg><span>View Project</span></a></div></div>`;
+        }).join('');
+        grid.innerHTML = html;
+    };
+    const renderMessage = () => {
+        grid.innerHTML = `<div class=\"col-span-full bg-gray-900/60 border border-gray-700/50 rounded-2xl p-8 text-center\"><p class=\"text-gray-300\">Unable to load projects. Start a local server and open this page via <span class=\"text-primary\">http://</span> or <span class=\"text-secondary\">https://</span>. Alternatively add inline JSON in a <span class=\"text-accent\">script#projects-data</span> tag.</p></div>`;
+    };
+    const tryInline = () => {
+        const inline = document.getElementById('projects-data');
+        if (!inline) return false;
+        try {
+            const data = JSON.parse(inline.textContent || '{}');
+            render(data);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    };
+    if (location.protocol === 'file:') {
+        if (!tryInline()) renderMessage();
+        return;
+    }
+    fetch('projects.json')
+        .then(r => r.json())
+        .then(render)
+        .catch(() => {
+            if (!tryInline()) renderMessage();
+        });
+}
+
+function renderProjectDetail() {
+    const container = document.getElementById('project-detail');
+    if (!container) return;
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const render = (data) => {
+        const project = (data.projects || []).find(p => p.id === id) || null;
+        if (!project) {
+            container.innerHTML = `<div class=\"bg-gray-900/60 border border-gray-700/50 rounded-2xl p-8\"><p class=\"text-gray-300\">Project not found.</p><a class=\"inline-block mt-4 px-4 py-2 text-primary border border-primary/50 rounded-lg hover:bg-primary/10\" href=\"index.html#projects\">Back to Projects</a></div>`;
+            return;
+        }
+        document.title = `${project.title} - Project Detail`;
+        const theme = project.theme;
+        const badgeText = theme === 'primary' ? 'text-black' : 'text-white';
+        const gradient = `bg-gradient-to-br from-${project.gradientFrom}/25 to-${project.gradientTo}/25`;
+        const badgeBg = `bg-${theme}/90 ${badgeText}`;
+        const heroSrc = project.imageSrc || ((project.images || [])[0] || '');
+        const heroAlt = project.imageAlt || project.title || '';
+        const heroImg = heroSrc ? `<img src=\"${heroSrc}\" alt=\"${heroAlt}\" class=\"w-full h-full object-cover max-h-[420px]\">` : `<div class=\"w-full h-full ${gradient}\"></div>`;
+        const tags = (project.tags || []).map(t => `<span class=\"px-3 py-1 bg-gray-900/60 text-gray-300 text-xs rounded-full border border-gray-700\">${t}</span>`).join('');
+        const video = '';
+        const features = (project.features || []).length ? project.features : (project.tags || []).slice(0,4).map(t => ({ title: t, description: 'Key capability enabled by this technology.' }));
+        const metrics = (project.metrics || []).length ? project.metrics : [
+            { label: 'Users', value: '1.2k+', description: 'Active test users' },
+            { label: 'Accuracy', value: '95%', description: 'Model performance' },
+            { label: 'Latency', value: '120ms', description: 'Avg. inference time' }
+        ];
+        const gallery = (project.images || []).slice(0,2);
+        const testimonial = '';
+        const marquee = (project.tags || []).map(t => `
+            <span class=\"px-3 py-2 bg-gray-900/60 text-gray-300 text-sm rounded-xl border border-gray-800 hover:border-${theme}/40 hover-lift\">${t}</span>
+        `).join('');
+        container.innerHTML = `
+            <section class="pt-10 md:pt-16 lg:pt-20 pb-8 md:pb-12">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="md:order-first" data-reveal>
+                        <div class="flex gap-2 mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-${theme}/10 text-${theme} border border-${theme}/30">${project.subtitle || project.categoryLabel || ''}</span>
+                            ${project.categoryLabel ? `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-secondary/10 text-secondary border border-secondary/30">${project.categoryLabel}</span>` : ''}
+                        </div>
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 animated-gradient-text">${project.title}</h1>
+                        <p class="text-gray-300 text-base sm:text-lg leading-relaxed max-w-xl">${project.description}</p>
+                        <div class="mt-6 flex flex-wrap gap-4" data-reveal>
+                            <a href="#gallery" class="px-6 py-3 rounded-xl bg-${theme} text-black font-bold hover:brightness-110 active:scale-95 transition hover-scale">View Demo</a>
+                            <a href="#description" class="px-6 py-3 rounded-xl border border-gray-700 text-gray-300 hover:border-gray-500 transition">How It Works</a>
+                        </div>
+                    </div>
+                    <div class="relative md:order-last md:justify-self-end" data-reveal>
+                        <div class="rounded-3xl overflow-hidden border border-${theme}/20 shadow-2xl shadow-${theme}/10 tilt-will-change hover-scale" data-tilt>${heroImg}</div>
+                    </div>
+                </div>
+            </section>
+            ${gallery.length ? `
+            <section id="gallery" class="py-12 md:py-16">
+                <h2 class="text-2xl md:text-3xl font-bold mb-8" data-reveal>Project Gallery</h2>
+                <div class="grid md:grid-cols-2 gap-6" data-stagger>
+                    ${gallery.map(src => `
+                        <div class="group rounded-2xl overflow-hidden border border-gray-800 bg-gray-900/50 hover:border-${theme}/40 transition relative hover-lift" data-reveal>
+                            <div class="aspect-[16/9] overflow-hidden bg-black/40">
+                                <img src="${src}" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500">
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </section>
+            ` : ''}
+            <section id="description" class="py-12 md:py-16">
+                <h2 class="text-2xl md:text-3xl font-bold mb-8" data-reveal>Project Description</h2>
+                <div class="p-6 rounded-2xl bg-gray-900/60 border border-gray-800 hover:border-${theme}/40 transition hover-lift" data-reveal>
+                    <p class="text-gray-300 leading-relaxed">${project.description}</p>
+                </div>
+            </section>
+            <section class=\"py-12 md:py-16\">
+                <h2 class=\"text-2xl md:text-3xl font-bold mb-8\" data-reveal>Tech Stack</h2>
+                <div class=\"relative overflow-hidden\" data-reveal>
+                    <div class=\"tech-marquee\">
+                        <div class=\"tech-marquee__track\">${marquee}</div>
+                        <div class=\"tech-marquee__track\">${marquee}</div>
+                    </div>
+                </div>
+            </section>
+            <section class="py-12 md:py-16">
+                <div class="p-6 rounded-2xl bg-gray-900/60 border border-gray-800 hover:border-${theme}/40 transition hover-lift text-center" data-reveal>
+                    <div class="text-gray-300 mb-4">Interested in building something similar?</div>
+                    <a href="index.html#home" class="inline-flex items-center gap-2 px-6 py-3 text-${theme} border border-${theme}/50 rounded-xl hover:bg-${theme}/10 font-bold">Hire Us</a>
+                </div>
+            </section>
+        `;
+        initRevealAnimations();
+    };
+    const renderMessage = () => {
+        container.innerHTML = `<div class=\"bg-gray-900/60 border border-gray-700/50 rounded-2xl p-8\"><p class=\"text-gray-300\">Unable to load project detail. Start a local server or add inline JSON under <span class=\"text-accent\">script#projects-data</span>.</p></div>`;
+    };
+    const tryInline = () => {
+        const inline = document.getElementById('projects-data');
+        if (!inline) return false;
+        try {
+            const data = JSON.parse(inline.textContent || '{}');
+            render(data);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    };
+    if (location.protocol === 'file:') {
+        if (!tryInline()) renderMessage();
+        return;
+    }
+    fetch('projects.json')
+        .then(r => r.json())
+        .then(render)
+        .catch(() => {
+            if (!tryInline()) renderMessage();
+        });
+}
+
+function initRevealAnimations() {
+    const nodes = document.querySelectorAll('[data-reveal]');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('show');
+        });
+    }, { threshold: 0.1 });
+    nodes.forEach((n, i) => {
+        n.style.setProperty('--delay', `${i * 0.06}s`);
+        observer.observe(n);
+    });
+    document.querySelectorAll('[data-stagger]').forEach(group => {
+        const children = Array.from(group.children);
+        children.forEach((child, idx) => child.style.setProperty('--delay', `${idx * 0.08}s`));
+    });
+}
+
+function initTiltEffects() {
+    const nodes = document.querySelectorAll('[data-tilt]');
+    nodes.forEach(el => {
+        const strength = 12;
+        const onMove = (e) => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            const rx = (y / rect.height) * strength;
+            const ry = (x / rect.width) * -strength;
+            el.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+        };
+        const onLeave = () => {
+            el.style.transform = '';
+        };
+        el.addEventListener('mousemove', onMove);
+        el.addEventListener('mouseleave', onLeave);
+    });
+}
+
+function initTechMarquee() {
+    document.querySelectorAll('.tech-marquee').forEach(wrapper => {
+        const tracks = wrapper.querySelectorAll('.tech-marquee__track');
+        if (tracks.length === 0) return;
+        const primary = tracks[0];
+        const viewport = wrapper.parentElement;
+        const base = primary.innerHTML;
+        // Expand primary track until it covers viewport width
+        while (primary.scrollWidth < viewport.offsetWidth) {
+            primary.innerHTML += base;
+        }
+        // Make secondary track identical for seamless loop
+        if (tracks[1]) {
+            tracks[1].innerHTML = primary.innerHTML;
+        } else {
+            const clone = document.createElement('div');
+            clone.className = 'tech-marquee__track';
+            clone.innerHTML = primary.innerHTML;
+            wrapper.appendChild(clone);
+        }
+    });
+}

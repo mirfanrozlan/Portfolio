@@ -1,0 +1,101 @@
+{
+  "projects": [
+    {
+      "id": "smart-weather-predictor",
+      "title": "Smart Weather Predictor",
+      "description": "Machine learning model that predicts weather patterns using historical data and real-time sensor inputs.",
+      "theme": "accent",
+      "gradientFrom": "accent",
+      "gradientTo": "primary",
+      "categoryLabel": "AI/ML",
+      "subtitle": "AI/ML",
+      "tags": ["Python", "TensorFlow", "FastAPI"],
+      "imageSrc": "images/projects/LucyHUH.jpg",
+      "viewUrl": "project.html?id=smart-weather-predictor",
+      "images": [
+        "images/projects/LucyHUH.jpg",
+        "images/projects/poster.jpg"
+      ]
+    },
+    {
+      "id": "taskflow-mobile",
+      "title": "TaskFlow Mobile",
+      "description": "Cross-platform productivity app with task management, team collaboration, and real-time synchronization.",
+      "theme": "primary",
+      "gradientFrom": "primary",
+      "gradientTo": "secondary",
+      "categoryLabel": "Mobile App",
+      "subtitle": "Mobile App",
+      "tags": ["Flutter", "Firebase", "Dart"],
+      "imageSrc": "images/projects/poster.jpg",
+      "viewUrl": "project.html?id=taskflow-mobile",
+      "images": [
+        "images/projects/poster.jpg"
+      ]
+    },
+    {
+      "id": "cloudsync-dashboard",
+      "title": "CloudSync Dashboard",
+      "description": "Real-time cloud monitoring dashboard with automated scaling, performance metrics, and cost optimization.",
+      "theme": "secondary",
+      "gradientFrom": "secondary",
+      "gradientTo": "primary",
+      "categoryLabel": "Cloud Platform",
+      "subtitle": "Cloud Platform",
+      "tags": ["Vue.js", "AWS", "Docker"],
+      "imageSrc": "images/projects/LucyHUH.jpg",
+      "viewUrl": "project.html?id=cloudsync-dashboard",
+      "images": [
+        "images/projects/LucyHUH.jpg"
+      ]
+    },
+    {
+      "id": "cryptowallet-dapp",
+      "title": "CryptoWallet DApp",
+      "description": "Decentralized cryptocurrency wallet with multi-chain support, DeFi integration, and secure transaction management.",
+      "theme": "accent",
+      "gradientFrom": "accent",
+      "gradientTo": "secondary",
+      "categoryLabel": "Blockchain",
+      "subtitle": "Blockchain",
+      "tags": ["Solidity", "Web3.js", "Ethereum"],
+      "imageSrc": "images/projects/poster.jpg",
+      "viewUrl": "project.html?id=cryptowallet-dapp",
+      "images": [
+        "images/projects/poster.jpg"
+      ]
+    },
+    {
+      "id": "streamhub-platform",
+      "title": "StreamHub Platform",
+      "description": "Video streaming platform with live broadcasting, chat integration, content management, and monetization features.",
+      "theme": "primary",
+      "gradientFrom": "primary",
+      "gradientTo": "accent",
+      "categoryLabel": "Video Platform",
+      "subtitle": "Video Platform",
+      "tags": ["Next.js", "WebRTC", "Redis"],
+      "imageSrc": "images/projects/LucyHUH.jpg",
+      "viewUrl": "project.html?id=streamhub-platform",
+      "images": [
+        "images/projects/LucyHUH.jpg"
+      ]
+    },
+    {
+      "id": "dataviz-analytics",
+      "title": "DataViz Analytics",
+      "description": "Advanced data visualization tool with interactive charts, statistical analysis, and automated report generation.",
+      "theme": "secondary",
+      "gradientFrom": "secondary",
+      "gradientTo": "accent",
+      "categoryLabel": "Data Science",
+      "subtitle": "Data Science",
+      "tags": ["Python", "Plotly", "Streamlit"],
+      "imageSrc": "images/projects/poster.jpg",
+      "viewUrl": "project.html?id=dataviz-analytics",
+      "images": [
+        "images/projects/poster.jpg"
+      ]
+    }
+  ]
+}
